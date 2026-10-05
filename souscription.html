@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>START2WAY — Inscription Entreprise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:        #0D2242;
+      --navy-light:  #1a3460;
+      --navy-dark:   #07162b;
+      --brand-green:       #009A44;
+      --brand-green-light: #26B462;
+      --paper:       #F8F6F3;
+      --white:       #FFFFFF;
+      --text-main:   #1A1A1A;
+      --text-sec:    #5A5A5A;
+      --border:      #E0E0E0;
+      --success:     #2E7D32;
+      --success-bg:  #E8F5E9;
+      --radius:      12px;
+      --radius-sm:   8px;
+      --font-body:   'Source Sans 3', sans-serif;
+      --font-head:   'Lexend', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background-color: var(--paper);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+    h1, h2, h3 { font-family: var(--font-head); color: var(--navy); font-weight: 600; }
+
+    /* HEADER */
+    .header { background-color: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    .header-container { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .btn-text { color: var(--text-sec); text-decoration: none; font-family: var(--font-head); font-weight: 500; font-size: 14px; }
+    .btn-text:hover { color: var(--navy); }
+
+    /* LAYOUT */
+    .signup-container { max-width: 800px; margin: 40px auto; padding: 0 24px; }
+    .signup-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+    .signup-title { font-size: 28px; margin-bottom: 8px; text-align: center; }
+    .signup-subtitle { color: var(--text-sec); font-size: 15px; margin-bottom: 32px; text-align: center; }
+
+    /* STEPPER */
+    .stepper-container { margin-bottom: 30px; text-align: center; }
+    .stepper { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .step-dot {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-family: var(--font-head);
+      font-weight: 600; font-size: 12px; color: var(--text-sec); transition: all 0.2s;
+    }
+    .step-dot.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .step-dot.done { border-color: var(--navy); color: var(--navy); }
+    .step-line { height: 2px; width: 30px; background: var(--border); transition: all 0.2s; }
+    .stepper-label { font-family: var(--font-head); font-size: 14px; color: var(--navy); font-weight: 500; }
+
+    /* FORM ELEMENTS */
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-family: var(--font-head); font-weight: 500; font-size: 13px; color: var(--navy); margin-bottom: 6px; }
+    .form-control {
+      width: 100%; padding: 12px 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+      font-family: var(--font-body); font-size: 14px; color: var(--text-main); background-color: var(--white); transition: all 0.2s;
+    }
+    .form-control:focus { outline: none; border-color: var(--navy); }
+    .input-error { border-color: #D32F2F !important; background: #FFEBEE !important; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .form-grid-2 { grid-template-columns: 1fr; gap: 0; } }
+
+    .form-actions { display: flex; justify-content: space-between; margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px; }
+    .btn { font-family: var(--font-head); font-weight: 600; font-size: 14px; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-secondary { background: var(--paper); color: var(--text-sec); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: rgba(0,0,0,0.05); }
+    .btn-primary { background: var(--navy); color: var(--white); }
+    .btn-primary:hover { background: var(--navy-light); }
+  
+    /* Logo theme */
+    .logo-light-bg { display: none; }
+    .logo-dark-bg { display: block; }
+    .logo-on-light .logo-light-bg { display: block !important; }
+    .logo-on-light .logo-dark-bg { display: none !important; }
+    .logo-on-dark .logo-light-bg { display: none !important; }
+    .logo-on-dark .logo-dark-bg { display: block !important; }
+
+    /* AES Notice */
+    .aes-notice { font-size: 11px; color: var(--text-sec); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+  </style>
+  <script src="docs/s1/js/s2w-utils.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <a href="landing.html" class="logo-container logo-on-light" aria-label="START2WAY Accueil">
+        <img src="logo.png" class="logo-dark-bg" alt="START2WAY" style="height: 40px; display: block;"><img src="logo-dark.png" class="logo-light-bg" alt="START2WAY" style="height: 40px; display: block;">
+      </a>
+      <a href="landing.html" class="btn-text">← Retour au site</a>
+    </div>
+  </header>
+
+  <!-- SIGNUP CARD -->
+  <div class="signup-container">
+    <div class="signup-card">
+      <h1 class="signup-title">Créer un compte Entreprise</h1>
+      <p class="signup-subtitle">Abonnement de base 14,99 €/mois HT (17,99 € TTC) — Inclut 2 salariés</p>
+
+      <!-- STEPPER -->
+      <div class="stepper-container">
+        <div class="stepper">
+          <div class="step-dot" id="sdot-1">1</div><div class="step-line" id="sline-1"></div>
+          <div class="step-dot" id="sdot-2">2</div><div class="step-line" id="sline-2"></div>
+          <div class="step-dot" id="sdot-3">3</div><div class="step-line" id="sline-3"></div>
+          <div class="step-dot" id="sdot-4">4</div><div class="step-line" id="sline-4"></div>
+          <div class="step-dot" id="sdot-5">5</div><div class="step-line" id="sline-5"></div>
+          <div class="step-dot" id="sdot-6">6</div><div class="step-line" id="sline-6"></div>
+          <div class="step-dot" id="sdot-7">7</div>
+        </div>
+        <div class="stepper-label" id="stepper-label">Étape 1/7 : Identité de l'entreprise</div>
+      </div>
+
+      <form id="signup-form">
+        <!-- S1 : Identité -->
+        <div class="form-section" id="emp-s1">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-lform">Forme juridique *</label>
+              <select id="f-lform" class="form-control" required>
+                <option value="">Choisir…</option>
+                <option>Micro-entrepreneur/EI</option><option>EURL</option><option>SARL</option>
+                <option>SAS</option><option>SASU</option><option>SA</option><option>SNC</option><option>Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-lname">Dénomination sociale *</label>
+              <input type="text" id="f-lname" class="form-control" placeholder="AMT Transport" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-tname">Nom commercial (facultatif)</label>
+            <input type="text" id="f-tname" class="form-control" placeholder="AMT">
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-siren">SIREN *</label>
+              <input type="text" id="f-siren" class="form-control" placeholder="9 chiffres" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-siret">SIRET *</label>
+              <input type="text" id="f-siret" class="form-control" placeholder="14 chiffres" required>
+            </div>
+          </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-activity-sector">Secteur d'activité de l'entreprise *</label>
+              <select id="f-activity-sector" class="form-control" required>
+                <option value="">Choisir…</option>
+                <option>Transport & Logistique</option>
+                <option>BTP & Construction</option>
+                <option>Industrie & Production</option>
+                <option>Commerce & Distribution</option>
+                <option>Agriculture & Agroalimentaire</option>
+                <option>Services aux entreprises</option>
+                <option>Maintenance & Intervention technique</option>
+                <option>Environnement & Déchets</option>
+                <option>Santé & Médico-social</option>
+                <option>Sécurité</option>
+                <option>Énergie</option>
+                <option>Administration / Collectivités</option>
+                <option>Déménagement</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div class="form-group" id="f-activity-other-container" style="display:none;">
+              <label class="form-label" for="f-activity-sector-other">Précisez votre activité *</label>
+              <input type="text" id="f-activity-sector-other" class="form-control" placeholder="Votre secteur">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-tva">N° TVA intracommunautaire *</label>
+              <input type="text" id="f-tva" class="form-control" placeholder="FR..." required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-naf">Code NAF/APE *</label>
+              <input type="text" id="f-naf" class="form-control" placeholder="Ex: 49.41A" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- S2 : Adresse -->
+        <div class="form-section" id="emp-s2">
+          <div class="form-group">
+            <label class="form-label" for="f-addr">Adresse *</label>
+            <input type="text" id="f-addr" class="form-control" placeholder="122 avenue de la Résistance" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-comp">Complément (facultatif)</label>
+            <input type="text" id="f-comp" class="form-control" placeholder="Bâtiment, étage...">
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-postal">Code postal *</label>
+              <input type="text" id="f-postal" class="form-control" placeholder="93340" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-city">Ville *</label>
+              <input type="text" id="f-city" class="form-control" placeholder="Le Raincy" required>
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-country">Pays</label>
+              <input type="text" id="f-country" class="form-control" value="France" readonly style="background:#eee;">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-timezone">Fuseau horaire de l'entreprise *</label>
+              <select id="f-timezone" class="form-control" required></select>
+              <small style="color:var(--text-sec);font-size:11px;display:block;margin-top:4px;">Utilisé pour calculer vos journées de travail selon l'heure locale de l'entreprise.</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- S3 : Représentant -->
+        <div class="form-section" id="emp-s3">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-rfirst">Prénom *</label>
+              <input type="text" id="f-rfirst" class="form-control" placeholder="Jean" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-rlast">Nom *</label>
+              <input type="text" id="f-rlast" class="form-control" placeholder="Dupont" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-rrole">Fonction *</label>
+            <select id="f-rrole" class="form-control" required>
+              <option value="">Choisir…</option>
+              <option>Gérant</option><option>Président</option><option>Directeur général</option><option>Associé</option><option>Autre</option>
+            </select>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-remail">Email pro *</label>
+              <input type="email" id="f-remail" class="form-control" placeholder="jean@entreprise.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-rphone">Téléphone pro *</label>
+              <input type="tel" id="f-rphone" class="form-control" placeholder="06..." required>
+            </div>
+          </div>
+        </div>
+
+        <!-- S4 : Coordonnées -->
+        <div class="form-section" id="emp-s4">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="f-phone">Téléphone principal *</label>
+              <input type="tel" id="f-phone" class="form-control" placeholder="01..." required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-cemail">Email de contact général *</label>
+              <input type="email" id="f-cemail" class="form-control" placeholder="contact@entreprise.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-site">Site internet (facultatif)</label>
+            <input type="url" id="f-site" class="form-control" placeholder="https://www.entreprise.com">
+          </div>
+        </div>
+
+        <!-- S5 : Bancaire -->
+        <div class="form-section" id="emp-s5">
+          <div style="background:#f4f7f6; padding:20px; border-radius:8px; border:1px solid #c8e1d6;">
+            <div class="form-group">
+              <label class="form-label" for="f-holder">Titulaire du compte *</label>
+              <input type="text" id="f-holder" class="form-control" placeholder="AMT Transport" required>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="f-iban">IBAN *</label>
+                <input type="text" id="f-iban" class="form-control" placeholder="FR76..." required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="f-bic">BIC *</label>
+                <input type="text" id="f-bic" class="form-control" placeholder="SOGE..." required>
+              </div>
+            </div>
+            <div class="aes-notice">🔒 Données bancaires chiffrées par clé d'enveloppe (AES-GCM).</div>
+          </div>
+        </div>
+
+        <!-- S6 : Sécurité -->
+        <div class="form-section" id="emp-s6">
+          <div class="form-group">
+            <label class="form-label" for="f-loginemail">Email de connexion (Identifiant) *</label>
+            <input type="email" id="f-loginemail" class="form-control" placeholder="Email pour vous connecter" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-pwd">Mot de passe *</label>
+            <input type="password" id="f-pwd" class="form-control" placeholder="8 caractères minimum" required>
+          </div>
+        </div>
+
+        <!-- S7 : Légal -->
+        <div class="form-section" id="emp-s7">
+          <div class="form-group" style="display:flex; gap:12px; align-items:flex-start;">
+            <input type="checkbox" id="f-cgu" required style="margin-top:4px;">
+            <label for="f-cgu" style="font-size:13px; color:var(--text-sec); line-height:1.4;">J'accepte les <a href="#">Conditions Générales d'Utilisation (CGU)</a> et je reconnais avoir pris connaissance de mes obligations en tant qu'employeur utilisateur de la plateforme.*</label>
+          </div>
+          <div class="form-group" style="display:flex; gap:12px; align-items:flex-start;">
+            <input type="checkbox" id="f-priv" required style="margin-top:4px;">
+            <label for="f-priv" style="font-size:13px; color:var(--text-sec); line-height:1.4;">J'accepte la <a href="#">Politique de confidentialité</a> concernant le traitement des données personnelles.*</label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="btn-prev" onclick="stepper.prev()" style="display:none;">← Précédent</button>
+          <button type="button" class="btn btn-primary" id="btn-next" onclick="stepper.next()">Suivant →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const stepperConfig = {
+      formId: 'signup-form',
+      maxSteps: 7,
+      labels: [
+        "Identité de l'entreprise",
+        "Adresse du siège social",
+        "Représentant de l'entreprise",
+        "Coordonnées de l'entreprise",
+        "Coordonnées bancaires",
+        "Sécurité du compte",
+        "Informations légales"
+      ],
+      onStepChange: (step) => {
+        document.getElementById('btn-prev').style.display = step > 1 ? 'block' : 'none';
+        const nextBtn = document.getElementById('btn-next');
+        if (step === 7) {
+          nextBtn.textContent = 'Créer mon compte →';
+        } else {
+          nextBtn.textContent = 'Suivant →';
+        }
+      },
+      onFinish: () => {
+        const actSector = document.getElementById('f-activity-sector').value;
+        const validSectors = [
+          "Transport & Logistique", "BTP & Construction", "Industrie & Production", "Commerce & Distribution",
+          "Agriculture & Agroalimentaire", "Services aux entreprises", "Maintenance & Intervention technique",
+          "Environnement & Déchets", "Santé & Médico-social", "Sécurité", "Énergie",
+          "Administration / Collectivités", "Déménagement", "Autre"
+        ];
+        if (!actSector || !validSectors.includes(actSector)) {
+          alert("Le secteur d'activité de l'entreprise est requis et doit être valide.");
+          return;
+        }
+        let actSectorOther = '';
+        if (actSector === 'Autre') {
+          actSectorOther = document.getElementById('f-activity-sector-other').value.trim();
+          if (!actSectorOther) {
+            alert("Veuillez préciser votre secteur d'activité.");
+            return;
+          }
+        }
+
+        const tz = document.getElementById('f-timezone').value;
+        if (!tz) {
+          alert("Le fuseau horaire de l'entreprise est requis.");
+          return;
+        }
+        try {
+          new Intl.DateTimeFormat(undefined, { timeZone: tz });
+        } catch (e) {
+          alert("Fuseau horaire invalide.");
+          return;
+        }
+
+        const companyData = {
+          legal_form: document.getElementById('f-lform').value,
+          legal_name: document.getElementById('f-lname').value,
+          trade_name: document.getElementById('f-tname').value,
+          siren: document.getElementById('f-siren').value,
+          siret: document.getElementById('f-siret').value,
+          tva_number: document.getElementById('f-tva').value,
+          naf_code: document.getElementById('f-naf').value,
+          activity_sector: actSector,
+          activity_sector_other: actSectorOther,
+          address: document.getElementById('f-addr').value,
+          address_comp: document.getElementById('f-comp').value,
+          postal: document.getElementById('f-postal').value,
+          city: document.getElementById('f-city').value,
+          country: document.getElementById('f-country').value,
+          timezone: document.getElementById('f-timezone').value,
+          rep_first: document.getElementById('f-rfirst').value,
+          rep_last: document.getElementById('f-rlast').value,
+          rep_role: document.getElementById('f-rrole').value,
+          rep_email: document.getElementById('f-remail').value,
+          rep_phone: document.getElementById('f-rphone').value,
+          legal_rep: document.getElementById('f-rfirst').value + ' ' + document.getElementById('f-rlast').value,
+          phone: document.getElementById('f-phone').value,
+          email: document.getElementById('f-cemail').value,
+          website: document.getElementById('f-site').value,
+          holder: document.getElementById('f-holder').value,
+          iban: document.getElementById('f-iban').value,
+          bic: document.getElementById('f-bic').value,
+          login_email: document.getElementById('f-loginemail').value,
+          password: document.getElementById('f-pwd').value,
+          cgu_accepted: document.getElementById('f-cgu').checked,
+          priv_accepted: document.getElementById('f-priv').checked
+        };
+        sessionStorage.setItem('temp_company_signup', JSON.stringify(companyData));
+        window.location.href = 'paiement.html';
+      }
+    };
+
+    const stepper = new S2WStepper(stepperConfig);
+    stepper.init();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const actSelect = document.getElementById('f-activity-sector');
+      if (actSelect) {
+        actSelect.addEventListener('change', function() {
+          const otherContainer = document.getElementById('f-activity-other-container');
+          if (this.value === 'Autre') {
+            otherContainer.style.display = 'block';
+            document.getElementById('f-activity-sector-other').required = true;
+          } else {
+            otherContainer.style.display = 'none';
+            document.getElementById('f-activity-sector-other').required = false;
+          }
+        });
+      }
+
+      const tzSelect = document.getElementById('f-timezone');
+      if (!tzSelect) return;
+      let tzs = [];
+      try {
+        tzs = Intl.supportedValuesOf('timeZone');
+      } catch (e) {
+        tzs = ['Europe/Paris', 'America/New_York', 'UTC'];
+      }
+      tzs.forEach(tz => {
+        const opt = document.createElement('option');
+        opt.value = tz;
+        opt.textContent = tz;
+        if (tz === 'Europe/Paris') opt.selected = true;
+        tzSelect.appendChild(opt);
+      });
+    });
+  </script>
+</body>
+</html>
